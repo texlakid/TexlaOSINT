@@ -1,0 +1,9 @@
+# Ignore generated OSINT reports
+osint_*.json
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Ignore system files
+.DS_Store

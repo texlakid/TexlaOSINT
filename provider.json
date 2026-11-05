@@ -1,0 +1,44 @@
+{
+  "github": {
+    "url": "https://github.com/{username}",
+    "regexUrl": "https?://(?:www\\.)?github\\.com/([A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?)(?=[/?#\"'\\s]|$)",
+    "usernameRegex": "^[A-Za-z0-9](?:[A-Za-z0-9-]{0,37}[A-Za-z0-9])?$"
+  },
+  "twitter": {
+    "url": "https://twitter.com/{username}",
+    "regexUrl": "https?://(?:www\\.|mobile\\.)?(?:twitter|x)\\.com/([A-Za-z0-9_]{1,15})(?=[/?#\"'\\s]|$)"
+  },
+  "instagram": {
+    "url": "https://instagram.com/{username}",
+    "regexUrl": "https?://(?:www\\.)?instagram\\.com/([A-Za-z0-9._]{1,30})(?=[/?#\"'\\s]|$)"
+  },
+  "linkedin": {
+    "url": "https://www.linkedin.com/in/{username}",
+    "regexUrl": "https?://(?:[a-z]{2,3}\\.)?linkedin\\.com/in/([A-Za-z0-9_-]{1,100})(?=[/?#\"'\\s]|$)"
+  },
+  "reddit": {
+    "url": "https://www.reddit.com/user/{username}",
+    "regexUrl": "https?://(?:www\\.|old\\.|np\\.)?reddit\\.com/(?:u|user)/([A-Za-z0-9_-]{3,20})(?=[/?#\"'\\s]|$)",
+    "usernameRegex": "^[A-Za-z0-9_-]{3,20}$"
+  },
+  "snapchat": {
+    "url": "https://www.snapchat.com/add/{username}",
+    "regexUrl": "https?://(?:www\\.)?snapchat\\.com/(?:add/|@)([A-Za-z][A-Za-z0-9._-]{2,14})(?=[/?#\"'\\s]|$)",
+    "usernameRegex": "^[A-Za-z][A-Za-z0-9._-]{2,14}$"
+  },
+  "bluesky": {
+    "url": "https://bsky.app/profile/{username}",
+    "regexUrl": "https?://(?:www\\.)?bsky\\.app/profile/([A-Za-z0-9](?:[A-Za-z0-9._-]{0,251}[A-Za-z0-9])?)(?=[/?#\"'\\s]|$)",
+    "usernameRegex": "^[A-Za-z0-9](?:[A-Za-z0-9._-]{0,251}[A-Za-z0-9])?$"
+  },
+  "telegram": {
+    "url": "https://t.me/{username}",
+    "regexUrl": "https?://(?:www\\.)?(?:t|telegram)\\.me/(?!joinchat/|addstickers/|share/|iv/|s/|proxy|socks|setlanguage)([A-Za-z][A-Za-z0-9_]{4,31})(?=[/?#\"'\\s]|$)",
+    "usernameRegex": "^[A-Za-z][A-Za-z0-9_]{4,31}$"
+  },
+  "tiktok": {
+    "url": "https://www.tiktok.com/@{username}",
+    "regexUrl": "https?://(?:www\\.|m\\.)?tiktok\\.com/@([A-Za-z0-9._]{2,24})(?=[/?#\"'\\s]|$)",
+    "usernameRegex": "^[A-Za-z0-9._]{2,24}$"
+  }
+}
