@@ -15,11 +15,11 @@ Built and tested entirely on an Android device using Termux.
 
 ```text
 texlaOSINT/
-├── main.py             # The CLI interface (Routing)
-├── engine.py           # Anti-Ban HTTP Engine (WAF Evasion)
-├── extractor.py        # Regex Parsing & Noise Filtering
-├── scanner.py          # Recursive BFS Orchestrator
-└── provider.json       # The 9-platform Regex Database
+├── main.py              The CLI interface (Routing)
+├── engine.py            Anti-Ban HTTP Engine (WAF Evasion)
+├── extractor.py         Regex Parsing & Noise Filtering
+├── scanner.py           Recursive BFS Orchestrator
+└── provider.json        The 9-platform Regex Database
 ```
 
 🚀 Quick Start (Termux / Linux)
