@@ -47,6 +47,7 @@ texlaOSINT/
 
 This tool is for educational purposes . Do not use against targets without explicit permission.
 
+```
 git clone https://github.com/texlakid/TexlaOSINT.git
 cd TexlaOSINT
 ```
