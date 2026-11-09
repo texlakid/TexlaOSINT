@@ -23,6 +23,8 @@ TexlaOSINT/
 ├── scanner.py           The Worker Class (Fetches individual profiles)
 ├── provider.json        The platform Regex Database
 └── requirements.txt     Dependencies
+```
+
 🏆 Proof of Concept (Real-World Scan)
 
 Running a scan on github:sindresorhus with --max-depth 2 successfully uncovered a real email address through recursive BFS pivoting:
