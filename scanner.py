@@ -1,95 +1,59 @@
-import json
-import sys
-from collections import deque
+import logging
+from typing import Any, Mapping
+
+
 from engine import Engine
-from extractor import load_providers, Extractor
+from extractor import Provider
 
+LOG = logging.getLogger("scanner")
 
-C_GREEN = '\033[92m'
-C_CYAN = '\033[96m'
-C_YELLOW = '\033[93m'
-C_RED = '\033[91m'
-C_RESET = '\033[0m'
+class Scanner:
+    """
+    A lightweight worker class that fetches a single profile.
+    The heavy lifting (queues, threads, extraction) is handled by main.py.
+    """
+    def __init__(self, engine: Engine, providers: Mapping[str, Provider], **kwargs: Any):
+        self.engine = engine
+        self.providers = providers
 
-def run_scanner(seed_provider: str, seed_handle: str, max_depth: int = 2, max_queue: int = 50):
-    print(f"{C_CYAN}[*] Initializing TexlaOSINT Engine...{C_RESET}")
-    providers = load_providers("provider.json")
-    extractor = Extractor(providers)
-    engine = Engine()
+    def scan(self, provider_name: str, handle: str) -> dict:
+        """
+        Fetches the profile URL for the given provider and handle.
+        Returns a dictionary that main.py's ScannerAdapter can parse.
+        """
+        provider = self.providers.get(provider_name)
+        if not provider:
+            return {
+                "found": False,
+                "error": f"Unknown provider: {provider_name}"
+            }
 
- 
-    queue = deque([(seed_provider, seed_handle, 0)])
-    visited = set()
-    
-    all_emails = set()
-    all_pivots = []
-
-    print(f"{C_CYAN}[*] Target: {seed_provider}/{seed_handle}{C_RESET}")
-    print(f"{C_CYAN}[*] Max Depth: {max_depth} | Max Nodes: {max_queue}\n{C_RESET}")
-
-    while queue and len(visited) < max_queue:
-        provider, handle, depth = queue.popleft()
         
-        if (provider, handle) in visited:
-            continue
-        visited.add((provider, handle))
-
-        url = providers[provider].profile_url(handle)
-        print(f"[{depth}] Fetching: {url}")
+        url = provider.profile_url(handle)
         
         try:
-            response = engine.get(url)
-        except Exception as exc:
-            print(f"    {C_RED}[skip] Connection failed: {exc}{C_RESET}")
-            continue
+        
+            response = self.engine.get(url)
             
-        if response.status_code != 200:
-            print(f"    {C_YELLOW}[skip] HTTP {response.status_code}{C_RESET}")
-            continue
-
-      
-        result = extractor.extract_from_response(
-            response, current_provider=provider, current_handle=handle,
-        )
-        
-     
-        for email in result.emails:
-            print(f"    {C_GREEN}[!] EMAIL FOUND: {email}{C_RESET}")
-            all_emails.add(email)
-
-        # 2. Queue New Pivots
-        if depth < max_depth:
-            for new_provider, new_handle in result.iter_handles():
-                if (new_provider, new_handle) not in visited:
-                    print(f"    {C_CYAN}[pivot] -> {new_provider}/{new_handle}{C_RESET}")
-                    queue.append((new_provider, new_handle, depth + 1))
-                    all_pivots.append({
-                        "source": f"{provider}/{handle}",
-                        "target": f"{new_provider}/{new_handle}"
-                    })
-
-    
-    output_data = {
-        "seed": f"{seed_provider}/{seed_handle}",
-        "emails_found": list(all_emails),
-        "pivots_found": all_pivots,
-        "total_nodes_scanned": len(visited)
-    }
-    
-    filename = f"osint_{seed_handle}.json"
-    with open(filename, "w") as f:
-        json.dump(output_data, f, indent=4)
-
-    print(f"\n{C_GREEN}[*] Scan Complete. Scanned {len(visited)} nodes.{C_RESET}")
-    print(f"{C_GREEN}[*] Total Emails Found: {len(all_emails)}{C_RESET}")
-    print(f"{C_GREEN}[*] Results saved to {filename}{C_RESET}")
-    engine.close()
-
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python scanner.py <provider> <handle>")
-        print("Example: python scanner.py github torvalds")
-        sys.exit(1)
-        
-   
-    run_scanner(sys.argv[1].lower(), sys.argv[2].lower(), max_depth=1)
+            if response.status_code == 200:
+                return {
+                    "found": True,
+                    "status_code": 200,
+                    "url": url,
+                    "html": response.text
+                }
+            else:
+                return {
+                    "found": False,
+                    "status_code": response.status_code,
+                    "url": url,
+                    "html": ""
+                }
+                
+        except Exception as exc:
+            LOG.debug(f"Fetch failed for {url}: {exc}")
+            return {
+                "found": False,
+                "url": url,
+                "error": str(exc)
+            }
