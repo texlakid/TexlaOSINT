@@ -10,7 +10,7 @@ Built and tested entirely on an Android device using Termux.
 *   **Anti-Ban Request Engine (`engine.py`):** Uses `requests.Session`, User-Agent rotation, and exponential backoff (honoring `Retry-After` headers) to survive Web Application Firewalls (WAFs) and rate limits.
 *   **Intelligent Extraction (`extractor.py`):** A stateful parsing pipeline that extracts emails (including deobfuscated ones like `[at]` and `[dot]`) and pivots to  different social media platforms.
 *   **Crash-Safe Streaming (`results.jsonl`):** Writes findings to disk in real-time. If the scan is interrupted, data is not lost.
-*   **Resume Capability:** Saves `state.json` checkpoints. If your phone dies or you hit `Ctrl+C`, simply run with `--resume` to pick up exactly where you left off.
+*   **Resume Capability:** Saves `state.json` checkpoints. 
 *   **Noise Reduction:** Features a 150+ word blacklist to ignore website navigation links (e.g., `/about`, `/login`, `/enterprise`) and prevents false positives.
 
 ## 📂 Architecture
@@ -56,8 +56,8 @@ Running a scan on github:sindresorhus with --max-depth 2 successfully uncovered 
 
 ⚠️ Architectural Limitations
 
-· JavaScript Walls: Platforms like Reddit, Instagram, and X (Twitter) heavily rely on client-side JavaScript rendering (React/Next.js). 
-· Where it Excels: This tool is highly effective against static HTML platforms.
+JavaScript Walls: Platforms like Reddit, Instagram, and X (Twitter) heavily rely on client-side JavaScript rendering (React/Next.js). 
+Where it Excels: This tool is highly effective against static HTML platforms.
 
 ⚖️ Disclaimer
 
